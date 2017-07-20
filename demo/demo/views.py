@@ -11,7 +11,8 @@ import datetime
 
 def home(request):
     if (request.user.is_authenticated()):
-        return render(request, 'demo/home.html')
+        return render(request, 'demo/home.html', \
+          context={'current_time':datetime.datetime.now()})
     return login(request, template_name='demo/home.html')
 
 @login_required

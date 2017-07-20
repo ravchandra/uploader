@@ -32,7 +32,8 @@
           <br>
           <br>
           {% if user.is_authenticated %}
-          Welcome!!!
+            Welcome {{ user.get_username }} !!! <br />
+            Page last refreshed at {{ current_time }}
 	    
             <!--a href="#">Create</a>
             <a href="#">Delete</a-->
