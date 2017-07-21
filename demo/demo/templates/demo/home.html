@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load bootstrap3 %}
-{% block title %}DEMO{% endblock %}
+{% block title %}Uploader{% endblock %}
 {% block nav_user %}
   {% if user.is_authenticated %}
     <ul class="nav navbar-nav navbar-right">
@@ -27,13 +27,14 @@
 	<div class="container">
       <div class="jumbotron">
 		<div class="container">
-          <h1>DEMO</h1>
-          <p class="lead">Upload file demo</p>
+          <h2>Uploader</h2>
+          <h6 class="lead">Upload file demo</h6>
           <br>
           <br>
           {% if user.is_authenticated %}
             Welcome {{ user.get_username }} !!! <br />
-            Page last refreshed at {{ current_time }}
+            Page last refreshed at {{ current_time }} UTC.
+
 	    
             <!--a href="#">Create</a>
             <a href="#">Delete</a-->

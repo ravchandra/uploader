@@ -6,7 +6,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = [url(r'^admin/', include(admin.site.urls)),
-    url(r'^accounts/', include('registration.backends.default.urls')),
+    url(r'^accounts/', include('registration.backends.simple.urls')),
     # Password URL workarounds for Django 1.6: 
     #   http://stackoverflow.com/questions/19985103/
     url(r'^password/change/$',
