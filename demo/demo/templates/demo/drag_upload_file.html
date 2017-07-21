@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+.main-center{
+    margin-top: 30px;
+    margin: 0 auto;
+    max-width: 330px;
+    padding: 40px 40px;
+
+}
+</style>
+<div class="container">
+    <div class="main-center">
+        {% if form.errors %}
+        <p>Upload failed. Please try again.</p>
+        {% endif %}
+
+        <form class="form-horizontal" method="post" action="{% url 'drag_upload_file' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+                        {{ form.as_table }}
+            <input type="submit" value="Upload" />
+        </form>
+
+    </div>
+</div>
+{% endblock %}
+

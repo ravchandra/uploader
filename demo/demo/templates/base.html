@@ -30,6 +30,7 @@
             <li><a href="#contact">Contact</a></li-->
             {% if user.is_authenticated %}
                 <li><a href="{% url 'upload_file' %}">Upload Files</a></li>
+                <li><a href="{% url 'drag_upload_file' %}">Drag&Upload Files</a></li>
             {% endif %}
           </ul>
           {% block nav_user %}
