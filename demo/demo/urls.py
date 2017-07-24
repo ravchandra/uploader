@@ -33,7 +33,5 @@ urlpatterns = [url(r'^admin/', include(admin.site.urls)),
     url(r'^upload_file/$', demo_views.upload_file_view, name='upload_file'),
     url(r'^upload_success/$', demo_views.upload_success_view, name='upload_success'),
     url(r'^dropzone/$', demo_views.dropzone_view, name='dropzone'),
-    #url(r'^drag_upload_file/$', demo_views.drag_upload_file_view, name='drag_upload_file'),
-    #url(r'^drag_upload_success/$', demo_views.drag_upload_success_view, name='drag_upload_success'),
 ]
 

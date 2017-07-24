@@ -14,7 +14,7 @@ import settings
 
 from config import SFTP_SERVER, SFTP_USERNAME, SFTP_PASSWORD, \
                     SFTP_DIR
-from .forms import UploadFileForm, DragUploadFileForm, DropZoneForm
+from .forms import UploadFileForm, DropZoneForm
 from .models import DropZoneModel
 
 def home(request):
@@ -64,29 +64,6 @@ def handle_uploaded_file_sftp(f):
         sftp.chdir(SFTP_DIR)
         sftp.put(os.path.join(settings.MEDIA_ROOT, f.name))
         #pdb.set_trace()
-
-'''
-@login_required
-def drag_upload_file_view(request):
-    if request.method == 'POST':
-        form = DragUploadFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            try:
-                #handle_uploaded_file(request.FILES['file'])
-                handle_uploaded_file_sftp(request.FILES['file'])
-            except Exception as err:
-                print err
-            else:
-                return HttpResponseRedirect(reverse('drag_upload_success'))
-    else:
-        form = DragUploadFileForm()
-    return render(request, 'demo/drag_upload_file.html', {'form': form})
-
-@login_required
-def drag_upload_success_view(request):
-    return render(request, 'demo/drag_upload_success.html', \
-      {'sftp_dir':SFTP_DIR,'sftp_server':SFTP_SERVER})
-'''
 
 @login_required
 def dropzone_view(request):
