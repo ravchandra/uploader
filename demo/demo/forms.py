@@ -8,4 +8,4 @@ class UploadFileForm(forms.Form):
 class DropZoneForm(forms.ModelForm):
     class Meta:
         model = DropZoneModel
-        fields = '__all__'
+        fields = ('file',)

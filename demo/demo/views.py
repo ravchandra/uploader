@@ -70,9 +70,9 @@ def dropzone_view(request):
     if request.method == 'POST':
         form = DropZoneForm(request.POST, request.FILES)
         if form.is_valid():
-            #new_file = DropZoneModel(file = request.FILES['file'])
-            #new_file.save()
-            handle_uploaded_file_sftp(request.FILES['file'])
+            new_file = DropZoneModel(file = request.FILES['file'])
+            new_file.save()
+            #handle_uploaded_file_sftp(request.FILES['file'])
 
             return HttpResponseRedirect(reverse('dropzone'))
     else:
