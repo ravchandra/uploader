@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Download Files{% endblock %}
+{% block content %}
+    <div class="container">
+      <div class="jumbotron">
+        <div class="container">
+            List files to be downloaded<br><br>
+            <div id="filelist" style="display:table" >
+                {% for f in files %}
+                    <div style="display:table-row;width:auto">
+                        <div style="display:table-column;width:600px;float:left;border:none;padding:1%">{{f.file.path}}</div>
+                        <div style="display:table-column;width:200px;float:left;border:none;padding:1%">{{f.user}}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div> <!-- /.container -->
+      </div> <!-- /.jumbotron -->
+    </div> <!-- /.container -->
+{% endblock content %}

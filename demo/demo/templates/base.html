@@ -31,6 +31,7 @@
             {% if user.is_authenticated %}
                 <li><a href="{% url 'upload_file' %}">Upload Files</a></li>
                 <li><a href="{% url 'dropzone' %}">Drag&Upload Files</a></li>
+                <li><a href="{% url 'downloads' %}">List Files</a></li>
             {% endif %}
           </ul>
           {% block nav_user %}

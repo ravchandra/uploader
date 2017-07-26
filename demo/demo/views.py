@@ -60,7 +60,8 @@ def handle_uploaded_file_sftp(f):
             destination.write(chunk)
         #os.chmod(os.path.join(FILE_DIR , f.name), 0666)
 
-    with pysftp.Connection(SFTP_SERVER, username=SFTP_USERNAME, password=SFTP_PASSWORD) as sftp:
+    with pysftp.Connection(SFTP_SERVER, username=SFTP_USERNAME,\
+    password=SFTP_PASSWORD) as sftp:
         sftp.chdir(SFTP_DIR)
         sftp.put(os.path.join(settings.MEDIA_ROOT, f.name))
         #pdb.set_trace()
@@ -70,7 +71,7 @@ def dropzone_view(request):
     if request.method == 'POST':
         form = DropZoneForm(request.POST, request.FILES)
         if form.is_valid():
-            new_file = DropZoneModel(file = request.FILES['file'])
+            new_file = DropZoneModel(file = request.FILES['file'], user=request.user)
             new_file.save()
             #handle_uploaded_file_sftp(request.FILES['file'])
 
@@ -80,4 +81,15 @@ def dropzone_view(request):
 
     data = {'form': form}
     return render(request, 'demo/dropzone.html', context=data)
+
+@login_required
+def downloads_view(request):
+    if (request.user.is_authenticated()):
+        if not request.user.is_superuser and not request.user.is_staff:
+            files = DropZoneModel.objects.filter(user = request.user)
+        else:
+            files = DropZoneModel.objects.all()
+        return render(request, 'demo/downloads.html', \
+          context={'files':files})
+    return render(request, template_name='demo/downloads.html')
 
