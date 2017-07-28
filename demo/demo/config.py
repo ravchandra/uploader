@@ -1,3 +1,4 @@
+DOWNLOAD_DIR = '/home/netsim/downloaded_files/'
 SFTP_SERVER = '10.0.2.15'
 SFTP_USERNAME = 'netsim'
 SFTP_PASSWORD = 'netsim'

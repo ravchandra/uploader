@@ -7,13 +7,14 @@ from django.core.urlresolvers import reverse
 from django.template import RequestContext
 
 import datetime
+import mimetypes
 import os
 import pysftp
 import stat
 import settings
 
 from config import SFTP_SERVER, SFTP_USERNAME, SFTP_PASSWORD, \
-                    SFTP_DIR
+                    SFTP_DIR, DOWNLOAD_DIR
 from .forms import UploadFileForm, DropZoneForm
 from .models import DropZoneModel
 
@@ -55,11 +56,6 @@ def handle_uploaded_file(f):
             destination.write(chunk)
 
 def handle_uploaded_file_sftp(f):
-    with open(os.path.join(settings.MEDIA_ROOT , f.name), 'wb+') as destination:
-        for chunk in f.chunks():
-            destination.write(chunk)
-        #os.chmod(os.path.join(FILE_DIR , f.name), 0666)
-
     with pysftp.Connection(SFTP_SERVER, username=SFTP_USERNAME,\
     password=SFTP_PASSWORD) as sftp:
         sftp.chdir(SFTP_DIR)
@@ -73,7 +69,7 @@ def dropzone_view(request):
         if form.is_valid():
             new_file = DropZoneModel(file = request.FILES['file'], user=request.user)
             new_file.save()
-            #handle_uploaded_file_sftp(request.FILES['file'])
+            handle_uploaded_file_sftp(new_file.file)
 
             return HttpResponseRedirect(reverse('dropzone'))
     else:
@@ -81,6 +77,12 @@ def dropzone_view(request):
 
     data = {'form': form}
     return render(request, 'demo/dropzone.html', context=data)
+
+def download_file_sftp(f):
+    with pysftp.Connection(SFTP_SERVER, username=SFTP_USERNAME,\
+    password=SFTP_PASSWORD) as sftp:
+        sftp.chdir(SFTP_DIR)
+        sftp.get(f,localpath=DOWNLOAD_DIR+f)
 
 @login_required
 def downloads_view(request):
@@ -93,3 +95,12 @@ def downloads_view(request):
           context={'files':files})
     return render(request, template_name='demo/downloads.html')
 
+def download_file_view(request):
+    file_name = request.path.split("/download_file/")[1]
+    download_file_sftp(file_name)
+    mime_type = mimetypes.MimeTypes().guess_type(DOWNLOAD_DIR+file_name)[0] 
+    with open(DOWNLOAD_DIR+file_name) as text_file:
+        response = HttpResponse(text_file.read())
+        response['content_type'] = mime_type
+        response['Content-Disposition'] = 'attachment;filename='+file_name
+        return response

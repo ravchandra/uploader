@@ -125,4 +125,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 ACCOUNT_ACTIVATION_DAYS = 3
 LOGIN_REDIRECT_URL = '/'
-MEDIA_ROOT = '/home/netsim/uploaded_files'
+MEDIA_ROOT = '/home/netsim/uploaded_files/'
+MEDIA_URL = '/'
