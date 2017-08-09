@@ -5,3 +5,4 @@ django-bootstrap3>=2.5.5
 django-registration>=1.0
 pysftp>=0.2.9
 wsgiref>=0.1.2
+django-debug-toolbar>=1.8

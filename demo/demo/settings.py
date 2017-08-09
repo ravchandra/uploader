@@ -67,6 +67,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'registration',
     'bootstrap3',
+    'debug_toolbar',
     'demo',
 )
 
@@ -77,6 +78,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
 ROOT_URLCONF = 'demo.urls'
@@ -121,9 +123,9 @@ STATICFILES_DIRS = (
 #
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-
-
 ACCOUNT_ACTIVATION_DAYS = 3
 LOGIN_REDIRECT_URL = '/'
 MEDIA_ROOT = '/home/netsim/uploaded_files/'
 MEDIA_URL = '/'
+
+INTERNAL_IPS = ['127.0.0.1']

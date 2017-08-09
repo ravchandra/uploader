@@ -1,7 +1,7 @@
 from django.conf.urls import include, url
 from django.contrib.auth import views as auth_views
 from demo import views as demo_views
-
+import settings
 
 from django.contrib import admin
 admin.autodiscover()
@@ -37,3 +37,9 @@ urlpatterns = [url(r'^admin/', include(admin.site.urls)),
     url(r'^downloads/$', demo_views.downloads_view, name='downloads'),
     url(r'^download_file.*$', demo_views.download_file_view, name='download_file'),
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns

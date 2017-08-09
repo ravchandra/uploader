@@ -55,7 +55,8 @@ def handle_uploaded_file(f):
         for chunk in f.chunks():
             destination.write(chunk)
 
-def handle_uploaded_file_sftp(f):
+@login_required
+def handle_uploaded_file_sftp(request,f):
     with pysftp.Connection(SFTP_SERVER, username=SFTP_USERNAME,\
     password=SFTP_PASSWORD) as sftp:
         sftp.chdir(SFTP_DIR)
@@ -69,7 +70,7 @@ def dropzone_view(request):
         if form.is_valid():
             new_file = DropZoneModel(file = request.FILES['file'], user=request.user)
             new_file.save()
-            handle_uploaded_file_sftp(new_file.file)
+            handle_uploaded_file_sftp(request,new_file.file)
 
             return HttpResponseRedirect(reverse('dropzone'))
     else:
@@ -91,10 +92,14 @@ def downloads_view(request):
             files = DropZoneModel.objects.filter(user = request.user)
         else:
             files = DropZoneModel.objects.all()
+        names = [f.file for f in files]
+        users = [f.user_id for f in files]
+        data = zip(names,users)
         return render(request, 'demo/downloads.html', \
-          context={'files':files})
+          context={'files':files,'data':data})
     return render(request, template_name='demo/downloads.html')
 
+@login_required
 def download_file_view(request):
     file_name = request.path.split("/download_file/")[1]
     download_file_sftp(file_name)
