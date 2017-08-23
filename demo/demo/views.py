@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from django.contrib.auth.views import login
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, FileResponse
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 
@@ -104,8 +104,8 @@ def download_file_view(request):
     file_name = request.path.split("/download_file/")[1]
     download_file_sftp(file_name)
     mime_type = mimetypes.MimeTypes().guess_type(DOWNLOAD_DIR+file_name)[0] 
-    with open(DOWNLOAD_DIR+file_name) as text_file:
-        response = HttpResponse(text_file.read())
+    with open(DOWNLOAD_DIR+file_name,'rb') as text_file:
+        response = FileResponse(text_file.read())
         response['content_type'] = mime_type
         response['Content-Disposition'] = 'attachment;filename='+file_name
         return response
