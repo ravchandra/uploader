@@ -34,8 +34,8 @@ def upload_file_view(request):
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             try:
-                #handle_uploaded_file(request.FILES['file'])
-                handle_uploaded_file_sftp(request.FILES['file'])
+                handle_uploaded_file(request.FILES['file'])
+                #handle_uploaded_file_sftp(request.FILES['file'])
             except Exception as err:
                 print err
             else:
@@ -65,9 +65,10 @@ def handle_uploaded_file_sftp(request,f):
 
 @login_required
 def dropzone_view(request):
+    #import pdb;pdb.set_trace()
     if request.method == 'POST':
         form = DropZoneForm(request.POST, request.FILES)
-        if form.is_valid():
+        if form.is_valid() or form.errors['file'][0] == u'The submitted file is empty.':
             new_file = DropZoneModel(file = request.FILES['file'], user=request.user)
             new_file.save()
             handle_uploaded_file_sftp(request,new_file.file)
