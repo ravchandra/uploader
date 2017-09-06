@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, HttpResponse, FileResponse
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 import datetime
 import mimetypes
@@ -93,11 +94,24 @@ def downloads_view(request):
             files = DropZoneModel.objects.filter(user = request.user)
         else:
             files = DropZoneModel.objects.all()
+
         names = [f.file for f in files]
         users = [f.user_id for f in files]
         data = zip(names,users)
+
+        paginator = Paginator(data, 5)
+        page = request.GET.get('page')
+        try:
+            data = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            data = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            data = paginator.page(paginator.num_pages)
+
         return render(request, 'demo/downloads.html', \
-          context={'files':files,'data':data})
+          context={'data':data})
     return render(request, template_name='demo/downloads.html')
 
 @login_required

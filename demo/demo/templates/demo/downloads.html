@@ -1,27 +1,41 @@
 {% extends "base.html" %}
 {% block title %}Download Files{% endblock %}
 {% block content %}
-    <div class="container">
-      <div class="jumbotron">
+<div class="container">
+    <div class="jumbotron">
         <div class="container">
             List files to be downloaded<br><br>
             <div class="" id="filelist" style="display:table;width:100%" >
                 {% for d in data %}
-                    <div class="" style="display:table-row;width:auto;">
-                        <div style="display:table-column;float:left;border:none;padding:1%;width:50%">
-                            <a href="{% url 'download_file' %}/{{d.0}}">
-                                {{d.0}}
-                            </a>
-                        </div>
-                        <div class="" style="display:table-column;float:left;border:none;padding:1%;width:10%">
-                            {{d.1}}
-                        </div>
-                        <div class="" style="display:table-column;float:left;border:none;padding:1%;">
-                        </div>
+                <div class="" style="display:table-row;width:auto;">
+                    <div style="display:table-column;float:left;border:none;padding:1%;width:50%">
+                        <a href="{% url 'download_file' %}/{{d.0}}">
+                            {{d.0}}
+                        </a>
                     </div>
+                    <div class="" style="display:table-column;float:left;border:none;padding:1%;width:10%">
+                        {{d.1}}
+                    </div>
+                    <div class="" style="display:table-column;float:left;border:none;padding:1%;">
+                    </div>
+                </div>
                 {% endfor %}
             </div>
+            <div class="pagination">
+                <span class="step-links">
+                    {% if data.has_previous %}
+                        <a href="?page={{ data.previous_page_number }}">previous</a>
+                    {% endif %}
+                    <span class="current">
+                        Page {{ data.number }} of {{ data.paginator.num_pages }}
+                    </span>
+
+                    {% if data.has_next %}
+                        <a href="?page={{ data.next_page_number }}">next</a>
+                    {% endif %}
+                </span>
+            </div>
         </div> <!-- /.container -->
-      </div> <!-- /.jumbotron -->
-    </div> <!-- /.container -->
+    </div> <!-- /.jumbotron -->
+</div> <!-- /.container -->
 {% endblock content %}
